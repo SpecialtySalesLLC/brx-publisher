@@ -8,6 +8,7 @@ import threading
 import time
 import json
 import os
+from random import choice, randint
 
 received_all_event = threading.Event()
 
@@ -16,9 +17,14 @@ thing_name = 'dev-iot-device-1'
 cert_filepath = './DeviceCertificate.pem'
 private_key_filepath = './private.pem'
 ca_filepath = './AmazonRootCA1.pem'
-
 pub_topic = 'device/{}/data'.format(thing_name)
-sub_topic = 'app/data'
+
+location_list = ['system', 'lane1', 'lane2', 'lane2', 'lane3', 'lane4']
+valves_name_list = ['main_water', 'main_drain', 'chem1',
+                    'chem2', 'bath', 'fill', 'drain', 'flash', 'air_blow', 'pod']
+sensors_name_list = ['water_meter', 'temperature',
+                     'chem1_level', 'chem2_level', 'pod_level']
+
 
 # Callback when connection is accidentally lost.
 
@@ -26,8 +32,9 @@ sub_topic = 'app/data'
 def on_connection_interrupted(connection, error, **kwargs):
     print("Connection interrupted. error: {}".format(error))
 
-
 # Callback when an interrupted connection is re-established.
+
+
 def on_connection_resumed(connection, return_code, session_present, **kwargs):
     print("Connection resumed. return_code: {} session_present: {}".format(
         return_code, session_present))
@@ -54,6 +61,47 @@ def on_resubscribe_complete(resubscribe_future):
 
 def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
+
+
+def subscribe_topic(topic):
+    print("Subscribing to topic " + topic)
+    subscribe_future, packet_id = mqtt_connection.subscribe(
+        topic=topic,
+        qos=mqtt.QoS.AT_LEAST_ONCE,
+        callback=on_message_received)
+    subscribe_result = subscribe_future.result()
+    print("Subscribed with {}".format(str(subscribe_result['qos'])))
+
+
+def publish_topic(topic, message):
+    print('Publishing message on topic {}'.format(topic))
+    message_json = json.dumps(message)
+    mqtt_connection.publish(
+        topic=pub_topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE)
+
+
+def get_valves_message():
+    valvesMessage = {
+        'device_name': thing_name,
+        'device_id': '1234567890',
+        'location': choice(location_list),
+        'name': choice(valves_name_list),
+        'state': randint(0, 1),
+        'time_reading': time.time()
+    }
+    return valvesMessage
+
+
+def get_sensors__message():
+    sensorsMessage = {
+        'device_name': thing_name,
+        'device_id': '1234567890',
+        'location': choice(location_list),
+        'name': choice(sensors_name_list),
+        'state': randint(0, 1),
+        'time_reading': time.time()
+    }
+    return sensorsMessage
 
 
 # Spin up resources
@@ -94,26 +142,11 @@ while True:
         print("Connected!")
         break
 
-# Subscribe
-print("Subscribing to topic " + sub_topic)
-subscribe_future, packet_id = mqtt_connection.subscribe(
-    topic=sub_topic,
-    qos=mqtt.QoS.AT_LEAST_ONCE,
-    callback=on_message_received)
-
-subscribe_result = subscribe_future.result()
-print("Subscribed with {}".format(str(subscribe_result['qos'])))
+# Subscribe then publish
+subscribe_topic('valves')
+subscribe_topic('sensors')
 
 while True:
-    print('Publishing message on topic {}'.format(pub_topic))
-
-    hello_world_message = {
-        'message': 'Hello from {} in the AWS IoT Workshop'.format(thing_name)
-    }
-
-    message_json = json.dumps(hello_world_message)
-    mqtt_connection.publish(
-        topic=pub_topic,
-        payload=message_json,
-        qos=mqtt.QoS.AT_LEAST_ONCE)
+    publish_topic('valves', get_valves_message())
+    publish_topic('sensors', get_sensors__message())
     time.sleep(5)
