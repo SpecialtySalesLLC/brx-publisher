@@ -8,7 +8,7 @@ import threading
 import time
 import json
 import os
-from random import choice, randint
+from random import choice, randint, uniform
 
 received_all_event = threading.Event()
 
@@ -98,10 +98,17 @@ def get_sensors__message():
         'device_id': '1234567890',
         'location': choice(location_list),
         'name': choice(sensors_name_list),
-        'state': randint(0, 1),
+        'state': uniform(0.0, 1000.00),
         'time_reading': time.time()
     }
     return sensorsMessage
+
+
+def publish_messages(frequency):
+    while True:
+        publish_topic('valves', get_valves_message())
+        publish_topic('sensors', get_sensors__message())
+        time.sleep(frequency)
 
 
 # Spin up resources
@@ -146,7 +153,4 @@ while True:
 subscribe_topic('valves')
 subscribe_topic('sensors')
 
-while True:
-    publish_topic('valves', get_valves_message())
-    publish_topic('sensors', get_sensors__message())
-    time.sleep(5)
+publish_messages(10)
