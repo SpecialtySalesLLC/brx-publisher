@@ -74,10 +74,11 @@ def subscribe_topic(topic):
 
 
 def publish_topic(topic, message):
-    print('Publishing message on topic {}'.format(topic))
+    full_pub_topic = '{}/{}'.format(pub_topic, topic)
+    print('Publishing message on topic {}'.format(full_pub_topic))
     message_json = json.dumps(message)
     mqtt_connection.publish(
-        topic=pub_topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE)
+        topic=full_pub_topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE)
 
 
 def get_valves_message():
