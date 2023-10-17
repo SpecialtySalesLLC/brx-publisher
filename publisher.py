@@ -14,6 +14,7 @@ received_all_event = threading.Event()
 
 thing_name = 'dev-iot-device-1'
 device_id = '1234567890'
+frequency = 10
 
 pub_topic = 'brx/data'
 cert_filepath = './DeviceCertificate.pem'
@@ -138,4 +139,4 @@ while True:
 # Subscribe then publish
 while True:
     publish_random_messages()
-    time.sleep(10)
+    time.sleep(frequency)
