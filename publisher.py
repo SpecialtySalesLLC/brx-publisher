@@ -12,13 +12,15 @@ from random import choice, randint, uniform
 
 received_all_event = threading.Event()
 
-target_ep = 'a1brrzwqiohmvf-ats.iot.us-east-2.amazonaws.com'
 thing_name = 'dev-iot-device-1'
+device_id = '1234567890'
+
+pub_topic = 'brx/data'
 cert_filepath = './DeviceCertificate.pem'
 private_key_filepath = './private.pem'
 ca_filepath = './AmazonRootCA1.pem'
-pub_topic = 'device/{}/data'.format(thing_name)
 
+target_ep = 'a1brrzwqiohmvf-ats.iot.us-east-2.amazonaws.com'
 type_list = ['valves', 'sensors']
 location_list = ['system', 'lane1', 'lane2', 'lane2', 'lane3', 'lane4']
 valves_name_list = ['main_water', 'main_drain', 'chem1',
