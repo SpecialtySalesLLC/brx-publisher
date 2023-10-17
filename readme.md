@@ -10,22 +10,22 @@ publisher.py will publish messages randomly generated every 10 seconds to simula
 - Choose Auto-generate a new certificate then Click Next
 - In the policies page, choose Brx-Iot-Policy then click on Create thing
 - Make sure to Download:
-  1- Device Certificate
-  2- Public key file
-  3- Private key file
-  4- Amazon Root CA1
+  - Device Certificate
+  - Public key file
+  - Private key file
+  - Amazon Root CA1
 - After downloading the above certs and key files, click on Done. 
 
 ## Copy files to new device
 - First rename the files in your local system before uploading them to the new device
-  1- Rename device certificate to certificate.pem
-  2- Rename private key to privateKey.pem
-  3- Rename Amazon root CA1 to AmazonRootCA1.pem
+  - Rename device certificate to certificate.pem
+  - Rename private key to privateKey.pem
+  - Rename Amazon root CA1 to AmazonRootCA1.pem
 - Download the publisher.py from [Github](https://github.com/SpecialtySalesLLC/brx-publisher/blob/main/publisher.py)
 - Edit publisher.py 
 - Set the following variables to their appropriate values based on the new created device:
-  1- thing_name
-  2- device_id
+  - thing_name
+  - device_id
 - By default frequency to publish messages is set to 10 seconds, change it to whatever number of seconds
 - Upload all files, certificates and publisher.py to the new device, they have to be located within same folder
 
