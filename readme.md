@@ -16,6 +16,13 @@ publisher.py will publish messages randomly generated every 10 seconds to simula
   - Amazon Root CA1
 - After downloading the above certs and key files, click on Done. 
 
+## Get device Id & name
+- When the new device is created as AWS Thing, a record about it will be inserted in the database 
+- From AWS console, navigate to DynamoDB in Ohio region
+- From the Tables menu select Explore Items
+- Select brx_dev_devices table
+- copy down the id and thingName
+
 ## Copy files to new device
 - First rename the files in your local system before uploading them to the new device
   - Rename device certificate to certificate.pem
@@ -23,9 +30,9 @@ publisher.py will publish messages randomly generated every 10 seconds to simula
   - Rename Amazon root CA1 to AmazonRootCA1.pem
 - Download the publisher.py from [Github](https://github.com/SpecialtySalesLLC/brx-publisher/blob/main/publisher.py)
 - Edit publisher.py 
-- Set the following variables to their appropriate values based on the new created device:
-  - thing_name
-  - device_id
+- Set the following variables with copied values from brx_dev_devices:
+  - thing_name to thingName
+  - device_id to thingId
 - By default frequency to publish messages is set to 10 seconds, change it to whatever number of seconds
 - Upload all files, certificates and publisher.py to the new device, they have to be located within same folder
 
