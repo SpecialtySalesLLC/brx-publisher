@@ -5,8 +5,12 @@ publisher.py will publish messages randomly generated every 10 seconds to simula
 ## Create new Thing and certificates
 - Log into AWS console and make sure to access AWS IoT dashboard in Ohio region
 - Select Manage menu option, then click Things in the sub menu. Choose create things
-- Choose Create a single thing
-- Specify Thing properties and choose No shadow then click Next
+- Choose Create a single thing then click Next
+- Specify Thing name and Thing type
+- Expand searchable thing attributes then add new attributes:
+  - set attribute key to macAddress
+  - set attribute value to the value of the MAC Address of the device 
+- Choose No shadow then click Next
 - Choose Auto-generate a new certificate then Click Next
 - In the policies page, choose Brx-Iot-Policy then click on Create thing
 - Make sure to Download:
