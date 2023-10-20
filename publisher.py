@@ -11,6 +11,7 @@ received_all_event = threading.Event()
 
 thing_name = 'dev-iot-device-1'
 device_id = '1234567890'
+mac_address = '12345678Afghfhg'
 frequency = 10
 
 pub_topic = 'brx/data'
@@ -74,11 +75,11 @@ def subscribe_topic():
 
 
 def get_random_message():
-    message_type = choice(type_list)
     message = {
         'device_name': thing_name,
-        'device_id': '1234567890',
-        'message_type': message_type,
+        'device_id': device_id,
+        'mac_address': mac_address,
+        'message_type': choice(type_list),
         'location': choice(location_list),
         'name': choice(valves_name_list) if type == 'valves' else choice(sensors_name_list),
         'state': randint(0, 1) if type == 'valves' else uniform(0.00, 1000.00),

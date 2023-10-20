@@ -37,6 +37,7 @@ publisher.py will publish messages randomly generated every 10 seconds to simula
 - Set the following variables with copied values from brx_dev_devices:
   - thing_name to thingName
   - device_id to thingId
+  - mac_address to macAddress
 - By default frequency to publish messages is set to 10 seconds, change it to whatever number of seconds
 - Upload all files, certificates and publisher.py to the new device, they have to be located within same folder
 
